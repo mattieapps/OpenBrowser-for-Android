@@ -15,6 +15,12 @@ public class MainActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        
+        if (version >= Build.VERSION_CODES.ECLAIR){
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.hide();
+        }
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -24,11 +30,6 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        if (version >= Build.VERSION_CODES.ECLAIR){
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.hide();
-        }
-        
         //WebView Code
         mWebView.getSettings.setJavaScriptEnabled(true);
         mWebView.setUrl("http://google.com");
