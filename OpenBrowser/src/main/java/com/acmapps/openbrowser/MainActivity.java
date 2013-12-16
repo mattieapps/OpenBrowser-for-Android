@@ -13,6 +13,8 @@ import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
 
+    int version = Build.VERSION.SDK_INT ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,11 @@ public class MainActivity extends ActionBarActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new DummyFragment())
                     .commit();
+        }
+
+        if (version >= Build.VERSION_CODES.ECLAIR){
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.hide();
         }
     }
 
