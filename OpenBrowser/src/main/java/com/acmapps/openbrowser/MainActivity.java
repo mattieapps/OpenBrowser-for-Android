@@ -10,6 +10,9 @@ public class MainActivity extends ActionBarActivity {
 
     int version = Build.VERSION.SDK_INT ;
     
+    mWebView = (WebView) findViewById(R.id.webView);
+    mEditText = (EditText) findViewById(R.id.addressEditText);
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +30,23 @@ public class MainActivity extends ActionBarActivity {
         }
         
         //WebView Code
-        mWebView = (WebView) findViewById(R.id.webView);
         mWebView.getSettings.setJavaScriptEnabled(true);
         mWebView.setUrl("http://google.com");
     }
-
+    
+    public void goClick(View view){
+        //Get URL from EditText
+        mWebView.setUrl(mEditText.getText());
+    }
+    
+    public void onLowMemory(){
+        if(version <= Build.VERSION_CODES.JELLYBEAN_MR2){
+            //Attemts to free memory from the webView
+            mWebView.freeMemory();
+        } else{
+            return;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
