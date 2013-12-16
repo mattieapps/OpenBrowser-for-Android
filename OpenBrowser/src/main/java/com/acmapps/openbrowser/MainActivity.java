@@ -10,11 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.webkit.WebView;
 
 public class MainActivity extends ActionBarActivity {
 
     int version = Build.VERSION.SDK_INT ;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,11 @@ public class MainActivity extends ActionBarActivity {
             ActionBar actionBar = getSupportActionBar();
             actionBar.hide();
         }
+        
+        //WebView Code
+        mWebView = (WebView) findViewById(R.id.webView);
+        mWebView.getSettings.setJavaScriptEnabled(true);
+        mWebView.setUrl("http://google.com");
     }
 
 
