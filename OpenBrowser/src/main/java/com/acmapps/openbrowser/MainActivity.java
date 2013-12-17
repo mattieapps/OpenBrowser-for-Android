@@ -102,11 +102,19 @@ public class MainActivity extends Activity {
     }
 
     public void backButton(View view){
+            if (mWebView.canGoBack() == true){
             mWebView.goBack();
+            Button backBtn = (Button) findViewById(R.id.backButton);
+            backBtn.setEnabled(true);
+        }
     }
 
     public void fwdButton(View view){
+            if (mWebView.canGoForward() == true){
             mWebView.goForward();
+            Button fwdBtn = (Button) findViewById(R.id.fwdButton);
+            fwdBtn.setEnabled(true);
+        }
     }
 
     public void stopButton(View view){
