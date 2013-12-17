@@ -1,5 +1,6 @@
 package com.acmapps.openbrowser;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.*;
 import android.app.ActionBar;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -16,8 +18,8 @@ public class MainActivity extends Activity {
     int version = Build.VERSION.SDK_INT ;
 
     private WebView mWebView;
-    private EditText mEditText;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
@@ -37,11 +39,11 @@ public class MainActivity extends Activity {
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.canGoBack();
         
-        if (mWebView.canGoBack == true){
+        if (mWebView.canGoBack()){
             backBtn.setEnabled(true);
         }
         
-        if (mWebView.canGoForward == true){
+        if (mWebView.canGoForward()){
             fwdBtn.setEnabled(true);
         }
 
@@ -99,14 +101,17 @@ public class MainActivity extends Activity {
     public void hideActionBar(){
         if (version >= Build.VERSION_CODES.HONEYCOMB){
             ActionBar actionBar = getActionBar();
-            actionBar.hide();
+            if (actionBar != null) {
+                actionBar.hide();
+            }
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void goClick(View view){
         //Get URL from EditText
         mWebView = (WebView) findViewById(R.id.webView);
-        mEditText = (EditText) findViewById(R.id.addressText);
+        EditText mEditText = (EditText) findViewById(R.id.addressText);
 
         String url = mEditText.getText().toString();
 
@@ -137,15 +142,13 @@ public class MainActivity extends Activity {
     }
 
 
-        @SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
     public void onLowMemory(){
         WebView mWebView = (WebView) findViewById(R.id.webView);
 
         if(version <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 ){
             //Attemts to free memory from the webView
             mWebView.freeMemory();
-        } else{
-            return;
         }
     }
 
