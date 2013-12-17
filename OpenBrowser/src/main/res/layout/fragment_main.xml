@@ -34,7 +34,8 @@
             android:text="Back"
             android:id="@+id/backButton"
             android:layout_alignBottom="@+id/refreshButton" android:layout_alignParentLeft="true"
-            android:onClick="backButton"/>
+            android:onClick="backButton"
+            android:enabled="false"/>
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
             android:id="@+id/fwdButton"
             android:layout_alignParentEnd="false" android:layout_alignParentStart="false"
             android:layout_below="@+id/addressText" android:layout_toRightOf="@+id/backButton"
-            android:onClick="fwdButton"/>
+            android:onClick="fwdButton"
+            android:enabled="false"/>
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
