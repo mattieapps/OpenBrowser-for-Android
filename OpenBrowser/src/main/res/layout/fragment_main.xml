@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity$DummyFragment">
+
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addressText"
+            android:layout_weight="2.24"
+            android:hint="Enter a Web Address"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/button" android:layout_toLeftOf="@+id/button"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go"
+            android:id="@+id/button"
+            android:onClick="goClick" android:layout_below="@+id/textView" android:layout_alignParentRight="true"/>
+    <WebView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/webView"
+            android:layout_below="@+id/backButton" android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true" android:layout_alignRight="@+id/button"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/backButton"
+            android:layout_alignBottom="@+id/refreshButton" android:layout_alignParentLeft="true"
+            android:onClick="backButton"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fwd"
+            android:id="@+id/fwdButton"
+            android:layout_alignParentEnd="false" android:layout_alignParentStart="false"
+            android:layout_below="@+id/addressText" android:layout_toRightOf="@+id/backButton"
+            android:onClick="fwdButton"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:id="@+id/stopButton" android:layout_below="@+id/addressText" android:layout_toRightOf="@+id/fwdButton"
+            android:onClick="stopButton"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/refreshButton"
+            android:layout_below="@+id/addressText" android:layout_toRightOf="@+id/stopButton" android:text="*"
+            android:onClick="refreshButton"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/app_name"
+            android:id="@+id/textView"
+            android:layout_below="@+id/progressBar" android:layout_centerHorizontal="true"/>
+    <ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_width="wrap_content"
+                 android:layout_height="wrap_content" android:id="@+id/progressBar"
+                 android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+                 android:layout_alignRight="@+id/button"/>
+</RelativeLayout>
