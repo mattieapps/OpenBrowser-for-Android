@@ -34,7 +34,7 @@
             android:text="Back"
             android:id="@+id/backButton"
             android:layout_alignBottom="@+id/refreshButton" android:layout_alignParentLeft="true"
-            android:onClick="backButton" android:enabled="true"/>
+            android:onClick="backButton"/>
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
