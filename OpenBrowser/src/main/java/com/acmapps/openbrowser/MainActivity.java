@@ -25,6 +25,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.fragment_main);
 
         final ProgressBar loadingProgressBar;
+        
+        Button backBtn = (Button) findViewById(R.id.backButton);
+        Button fwdBtn = (Button) findViewById(R.id.fwdButton);
+        
         String URL = "http://google.com/";
 
         mWebView = (WebView) findViewById(R.id.webView);
@@ -32,6 +36,14 @@ public class MainActivity extends Activity {
         mWebView.loadUrl(URL);
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.canGoBack();
+        
+        if (mWebView.canGoBack == true){
+            backBtn.setEnabled(true);
+        }
+        
+        if (mWebView.canGoForward == true){
+            fwdBtn.setEnabled(true);
+        }
 
         loadingProgressBar=(ProgressBar)findViewById(R.id.progressBar);
 
@@ -102,11 +114,11 @@ public class MainActivity extends Activity {
     }
 
     public void backButton(View view){
-            mWebView.goBack();
+        mWebView.goBack();
     }
 
     public void fwdButton(View view){
-            mWebView.goForward();
+        mWebView.goForward();
     }
 
     public void stopButton(View view){
