@@ -1,47 +1,135 @@
 package com.acmapps.openbrowser;
 
-import android.support.v7.app.*;
-import android.support.v4.app.*;
+import android.annotation.TargetApi;
+import android.app.*;
+import android.app.ActionBar;
+import android.content.Context;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     int version = Build.VERSION.SDK_INT ;
-    
-    mWebView = (WebView) findViewById(R.id.webView);
-    mEditText = (EditText) findViewById(R.id.addressEditText);
-    
+
+    private WebView mWebView;
+    private EditText mEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
-        if (version >= Build.VERSION_CODES.ECLAIR){
-            ActionBar actionBar = getSupportActionBar();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_main);
+
+        final ProgressBar loadingProgressBar;
+        String URL = "http://google.com/";
+
+        mWebView = (WebView) findViewById(R.id.webView);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.loadUrl(URL);
+        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.canGoBack();
+
+        loadingProgressBar=(ProgressBar)findViewById(R.id.progressBar);
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            // this will be called on page loading progress
+
+            @Override
+
+            public void onProgressChanged(WebView view, int newProgress) {
+
+                super.onProgressChanged(view, newProgress);
+
+
+                loadingProgressBar.setProgress(newProgress);
+
+                if (newProgress == 100) {
+                    loadingProgressBar.setVisibility(View.GONE);
+
+                } else {
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+
+                }
+            }
+        }); 
+        hideActionBar();
+
+    }
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            view.loadUrl(url);
+            return true;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void hideActionBar(){
+        if (version >= Build.VERSION_CODES.HONEYCOMB){
+            ActionBar actionBar = getActionBar();
             actionBar.hide();
         }
-        
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DummyFragment())
-                    .commit();
-        }
-
-        //WebView Code
-        mWebView.getSettings.setJavaScriptEnabled(true);
-        mWebView.setUrl("http://google.com");
     }
-    
+
     public void goClick(View view){
         //Get URL from EditText
-        mWebView.setUrl(mEditText.getText());
+        mWebView = (WebView) findViewById(R.id.webView);
+        mEditText = (EditText) findViewById(R.id.addressText);
+
+        String url = mEditText.getText().toString();
+
+        mWebView.loadUrl("http://" + url);
     }
-    
+
+    public void backButton(View view){
+            mWebView.goBack();
+    }
+
+    public void fwdButton(View view){
+            mWebView.goForward();
+    }
+
+    public void stopButton(View view){
+        mWebView.stopLoading();
+
+        Context context = getApplicationContext();
+        CharSequence text = "Stopping Page Load";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    public void refreshButton(View view){
+        mWebView.reload();
+    }
+
+
+        @SuppressWarnings("deprecation")
     public void onLowMemory(){
-        if(version <= Build.VERSION_CODES.JELLYBEAN_MR2){
+        WebView mWebView = (WebView) findViewById(R.id.webView);
+
+        if(version <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1 ){
             //Attemts to free memory from the webView
             mWebView.freeMemory();
         } else{
@@ -68,21 +156,4 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A dummy fragment containing a simple view.
-     */
-    public static class DummyFragment extends Fragment {
-
-        public DummyFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
-
 }
