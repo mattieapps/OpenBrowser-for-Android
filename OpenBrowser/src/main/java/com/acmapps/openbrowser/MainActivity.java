@@ -55,6 +55,9 @@ public class MainActivity extends Activity {
 
             public void onProgressChanged(WebView view, int newProgress) {
 
+                TextView mTextView = (TextView) findViewById(R.id.urlTitleText);
+                String title = mWebView.getTitle();
+
                 super.onProgressChanged(view, newProgress);
 
 
@@ -62,6 +65,12 @@ public class MainActivity extends Activity {
 
                 if (newProgress == 100) {
                     loadingProgressBar.setVisibility(View.GONE);
+                    mTextView.setVisibility(View.VISIBLE);
+                    if (title == null){
+                        mTextView.setText("OpenBrowser");
+                    }else if (!title.equals(null)) {
+                        mTextView.setText(title + " - OpenBrowser");
+                    }
 
                 } else {
                     loadingProgressBar.setVisibility(View.VISIBLE);
@@ -81,6 +90,7 @@ public class MainActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if(keyCode == KeyEvent.KEYCODE_BACK){
+            mWebView.goBack();
             finish();
         }
         return super.onKeyDown(keyCode, event);
