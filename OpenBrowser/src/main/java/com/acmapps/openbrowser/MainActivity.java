@@ -5,8 +5,6 @@ import android.annotation.TargetApi;
 import android.app.*;
 import android.app.ActionBar;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
@@ -15,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends Activity {
 
     int version = Build.VERSION.SDK_INT ;
@@ -22,7 +21,6 @@ public class MainActivity extends Activity {
     private WebView mWebView;
     String URL = "http://google.com/";
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
@@ -32,10 +30,7 @@ public class MainActivity extends Activity {
         final ProgressBar loadingProgressBar;
 
         mWebView = (WebView) findViewById(R.id.webView);
-        mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl("file:///android_asset/index.html");
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.getSettings().setSupportZoom(true);
 
         //webView Settings
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -89,9 +84,9 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
             mWebView.goBack();
-            finish();
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
