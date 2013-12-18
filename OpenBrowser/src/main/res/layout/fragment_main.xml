@@ -11,7 +11,7 @@
             android:id="@+id/addressText"
             android:layout_weight="2.24"
             android:hint="Enter a Web Address"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/urlTitleText"
             android:layout_alignParentLeft="true"
             android:layout_alignBottom="@+id/button" android:layout_toLeftOf="@+id/button"/>
     <Button
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Go"
             android:id="@+id/button"
-            android:onClick="goClick" android:layout_below="@+id/textView" android:layout_alignParentRight="true"/>
+            android:onClick="goClick" android:layout_below="@+id/urlTitleText" android:layout_alignParentRight="true"/>
     <WebView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/app_name"
-            android:id="@+id/textView"
+            android:id="@+id/urlTitleText"
             android:layout_below="@+id/progressBar" android:layout_centerHorizontal="true"/>
     <ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_width="wrap_content"
                  android:layout_height="wrap_content" android:id="@+id/progressBar"
