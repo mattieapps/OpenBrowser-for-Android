@@ -5,10 +5,11 @@ import android.annotation.TargetApi;
 import android.app.*;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ public class MainActivity extends Activity {
     int version = Build.VERSION.SDK_INT ;
 
     private WebView mWebView;
+    String URL = "http://google.com/";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -27,27 +29,21 @@ public class MainActivity extends Activity {
         setContentView(R.layout.fragment_main);
 
         final ProgressBar loadingProgressBar;
-        
-        Button backBtn = (Button) findViewById(R.id.backButton);
-        Button fwdBtn = (Button) findViewById(R.id.fwdButton);
-        
-        String URL = "http://google.com/";
 
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.loadUrl(URL);
+        mWebView.loadUrl("file:///android_asset/index.html");
         mWebView.setWebViewClient(new MyWebViewClient());
-        mWebView.canGoBack();
-        
-        if (mWebView.canGoBack()){
-            backBtn.setEnabled(true);
-        }
-        
-        if (mWebView.canGoForward()){
-            fwdBtn.setEnabled(true);
-        }
+        mWebView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
 
-        loadingProgressBar=(ProgressBar)findViewById(R.id.progressBar);
+        loadingProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         mWebView.setWebChromeClient(new WebChromeClient() {
 
@@ -70,11 +66,13 @@ public class MainActivity extends Activity {
 
                 }
             }
-        }); 
+        });
+
+
+
         hideActionBar();
 
     }
-
 
 
     @Override
@@ -139,6 +137,10 @@ public class MainActivity extends Activity {
 
     public void refreshButton(View view){
         mWebView.reload();
+    }
+
+    public void homeButton(View view){
+        mWebView.loadUrl(URL);
     }
 
 
