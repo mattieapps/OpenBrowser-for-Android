@@ -19,13 +19,14 @@ public class MainActivity extends Activity {
     int version = Build.VERSION.SDK_INT ;
 
     private WebView mWebView;
-    String URL = "http://google.com/";
+    String homeURL = "http://google.com/";
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
+        setContentView(R.layout.new_layout);
 
         final ProgressBar loadingProgressBar;
 
@@ -37,8 +38,12 @@ public class MainActivity extends Activity {
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mWebView.getSettings().setSupportZoom(true);
         mWebView.getSettings().supportZoom();
+        mWebView.getSettings().setBuiltInZoomControls(true);
+        if (version >= Build.VERSION_CODES.HONEYCOMB){
+            mWebView.getSettings().setDisplayZoomControls(false);
+        }
 
-        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.setWebViewClient(new OBWebViewClient());
 
         loadingProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -51,6 +56,7 @@ public class MainActivity extends Activity {
             public void onProgressChanged(WebView view, int newProgress) {
 
                 TextView mTextView = (TextView) findViewById(R.id.urlTitleText);
+                EditText mEditText = (EditText) findViewById(R.id.addressText);
                 String title = mWebView.getTitle();
 
                 super.onProgressChanged(view, newProgress);
@@ -67,6 +73,11 @@ public class MainActivity extends Activity {
                         mTextView.setText(title + " - OpenBrowser");
                     }
 
+                    CharSequence address = mWebView.getUrl();
+                    if (!address.equals("file:///android_asset/index.html")){
+                        mEditText.setText(address);
+                    }
+
                 } else {
                     loadingProgressBar.setVisibility(View.VISIBLE);
 
@@ -74,12 +85,12 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
         hideActionBar();
 
-    }
+        //Keep Keyboard from auto popping up
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -91,7 +102,7 @@ public class MainActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class OBWebViewClient extends WebViewClient {
 
 
         @Override
@@ -147,7 +158,7 @@ public class MainActivity extends Activity {
     }
 
     public void homeButton(View view){
-        mWebView.loadUrl(URL);
+        mWebView.loadUrl(homeURL);
     }
 
 
