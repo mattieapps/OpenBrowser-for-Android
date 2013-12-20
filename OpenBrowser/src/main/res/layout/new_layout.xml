@@ -71,11 +71,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/app_name"
             android:id="@+id/urlTitleText"
-            android:layout_below="@+id/progressBar" android:layout_centerHorizontal="true"/>
-    <ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_width="wrap_content"
-                 android:layout_height="wrap_content" android:id="@+id/progressBar"
-                 android:layout_alignParentLeft="true"
-                 android:layout_alignParentTop="true" android:layout_alignRight="@+id/button"/>
+            android:layout_centerHorizontal="true"/>
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -90,5 +86,10 @@
             android:layout_height="wrap_content"
             android:text="..."
             android:id="@+id/menuButton" android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/addressText" android:layout_below="@+id/webView"/>
+            android:layout_toRightOf="@+id/addressText" android:layout_below="@+id/webView"
+            android:onClick="showPopup"/>
+    <ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_width="wrap_content"
+                 android:layout_height="wrap_content" android:id="@+id/progressBar"
+                 android:layout_above="@+id/addressText" android:layout_alignParentLeft="true"
+                 android:layout_alignRight="@+id/button"/>
 </RelativeLayout>
