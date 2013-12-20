@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.*;
 import android.app.ActionBar;
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
@@ -77,9 +78,11 @@ public class MainActivity extends Activity {
                     if (!address.equals("file:///android_asset/index.html")){
                         mEditText.setText(address);
                     }
+                    mTextView.setVisibility(View.VISIBLE);
 
                 } else {
                     loadingProgressBar.setVisibility(View.VISIBLE);
+                    mTextView.setVisibility(View.INVISIBLE);
 
                 }
             }
@@ -161,6 +164,12 @@ public class MainActivity extends Activity {
         mWebView.loadUrl(homeURL);
     }
 
+    public void showPopup(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_actions, popup.getMenu());
+        popup.show();
+    }
 
     @SuppressWarnings("deprecation")
     public void onLowMemory(){
@@ -170,25 +179,5 @@ public class MainActivity extends Activity {
             //Attemts to free memory from the webView
             mWebView.freeMemory();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
