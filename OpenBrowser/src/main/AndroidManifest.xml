@@ -43,6 +43,7 @@
                 <data android:scheme="javascript" />
             </intent-filter>
         </activity>
-        <activity android:name=".Preferences"/>
+        <activity android:name=".Preferences"
+                  android:parentActivityName=".MainActivity"/>
     </application>
 </manifest>
