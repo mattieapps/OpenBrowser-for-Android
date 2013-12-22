@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Browsing">
+    <CheckBoxPreference android:title="Incognito Browsing"
+                        android:key="incognitoCheckBox"
+                        android:summary="Toggle Incognito Browsing"/>
+    </PreferenceCategory>
+</PreferenceScreen>
