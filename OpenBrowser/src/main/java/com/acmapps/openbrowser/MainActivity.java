@@ -5,21 +5,21 @@ import android.annotation.TargetApi;
 import android.app.*;
 import android.app.ActionBar;
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.*;
 import android.os.*;
 import android.webkit.*;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 @SuppressLint("SetJavaScriptEnabled")
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickListener {
 
     int version = Build.VERSION.SDK_INT ;
 
-    private WebView mWebView;
+    public WebView mWebView;
     String homeURL = "http://google.com/";
 
     @SuppressLint("NewApi")
@@ -32,14 +32,45 @@ public class MainActivity extends Activity {
         final ProgressBar loadingProgressBar;
 
         mWebView = (WebView) findViewById(R.id.webView);
-        mWebView.loadUrl("file:///android_asset/index.html");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean incognitoCheckBox = sharedPreferences.getBoolean("incognitoCheckBox", false);
+        if (incognitoCheckBox == true){
+            mWebView.loadUrl("file:///android_asset/index_private.html");
 
-        //webView Settings
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.getSettings().setSupportZoom(true);
-        mWebView.getSettings().supportZoom();
-        mWebView.getSettings().setBuiltInZoomControls(true);
+            //webView Settings
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            mWebView.getSettings().setSupportZoom(true);
+            mWebView.getSettings().supportZoom();
+            mWebView.getSettings().setBuiltInZoomControls(true);
+            mWebView.getSettings().setSaveFormData(false);
+
+            CookieManager.getInstance().setAcceptCookie(false);
+            mWebView.getSettings().setCacheMode(mWebView.getSettings().LOAD_NO_CACHE);
+            mWebView.getSettings().setAppCacheEnabled(false);
+
+            Context context = getApplicationContext();
+            CharSequence text = "Incognito Mode Activated";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        } else {
+            mWebView.loadUrl("file:///android_asset/index.html");
+
+            //webView Settings
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            mWebView.getSettings().setSupportZoom(true);
+            mWebView.getSettings().supportZoom();
+            mWebView.getSettings().setBuiltInZoomControls(true);
+            mWebView.getSettings().setSaveFormData(true);
+
+            CookieManager.getInstance().setAcceptCookie(true);
+            mWebView.getSettings().setCacheMode(mWebView.getSettings().LOAD_DEFAULT);
+            mWebView.getSettings().setAppCacheEnabled(true);
+        }
+
         if (version >= Build.VERSION_CODES.HONEYCOMB){
             mWebView.getSettings().setDisplayZoomControls(false);
         }
@@ -50,7 +81,7 @@ public class MainActivity extends Activity {
 
         mWebView.setWebChromeClient(new WebChromeClient() {
 
-            // this will be called on page loading progress
+            //This will be called on page loading progress
 
             @Override
 
@@ -77,6 +108,12 @@ public class MainActivity extends Activity {
                     CharSequence address = mWebView.getUrl();
                     if (!address.equals("file:///android_asset/index.html")){
                         mEditText.setText(address);
+                    }
+
+                    if (address.equals("file:///android_asset/index_private.html")) {
+                        mEditText.setText("");
+                    } else {
+                        mEditText.setText("");
                     }
                     mTextView.setVisibility(View.VISIBLE);
 
@@ -164,11 +201,41 @@ public class MainActivity extends Activity {
         mWebView.loadUrl(homeURL);
     }
 
-    public void showPopup(View view) {
-        PopupMenu popup = new PopupMenu(this, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.popup_actions, popup.getMenu());
-        popup.show();
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void showPopup(View v) {
+
+        PopupMenu mypopupmenu = new PopupMenu(this, v);
+
+        mypopupmenu.setOnMenuItemClickListener(this);
+
+        MenuInflater inflater = mypopupmenu.getMenuInflater();
+
+        inflater.inflate(R.menu.popup_actions, mypopupmenu.getMenu());
+
+        mypopupmenu.show();
+
+    }
+
+    @Override
+
+    public boolean onMenuItemClick(MenuItem arg0) {
+
+        switch (arg0.getItemId()) {
+
+            case R.id.settings:
+
+                Intent intent = new Intent(this, Preferences.class);
+                startActivity(intent);
+
+                return true;
+
+
+            default:
+
+                return super.onContextItemSelected(arg0);
+
+        }
+
     }
 
     @SuppressWarnings("deprecation")
