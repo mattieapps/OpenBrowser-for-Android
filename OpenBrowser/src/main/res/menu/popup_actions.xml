@@ -2,5 +2,12 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/settings"
-          android:title="Settings"/>
+          android:title="Settings"
+          android:orderInCategory="100"/>
+    <item android:id="@+id/refreshButton"
+          android:title="Refresh"
+          android:orderInCategory="0"/>
+    <item android:id="@+id/stopButton"
+          android:title="Stop"
+          android:orderInCategory="1"/>
 </menu>
