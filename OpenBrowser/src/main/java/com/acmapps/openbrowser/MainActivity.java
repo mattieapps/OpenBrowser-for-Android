@@ -222,6 +222,21 @@ public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickL
 
                 return true;
 
+            case R.id.refreshButton:
+                mWebView.reload();
+                return true;
+
+            case R.id.stopButton:
+                mWebView.stopLoading();
+
+                Context context = getApplicationContext();
+                CharSequence text = "Stopping Page Load";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return true;
+
 
             default:
 
