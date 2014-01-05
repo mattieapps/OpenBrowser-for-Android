@@ -184,37 +184,28 @@ public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickL
         mWebView.goForward();
     }
 
-    public void stopButton(View view){
-        mWebView.stopLoading();
-
-        Context context = getApplicationContext();
-        CharSequence text = "Stopping Page Load";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
     public void refreshButton(View view){
         mWebView.reload();
     }
 
     public void homeButton(View view){
-        mWebView.loadUrl(homeURL);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String homeURL = sharedPreferences.getString("homePagePref", "http://google.com");
+        mWebView.loadUrl("http://" + homeURL);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void showPopup(View v) {
 
-        PopupMenu mypopupmenu = new PopupMenu(this, v);
+        PopupMenu popupMenu = new PopupMenu(this, v);
 
-        mypopupmenu.setOnMenuItemClickListener(this);
+        popupMenu.setOnMenuItemClickListener(this);
 
-        MenuInflater inflater = mypopupmenu.getMenuInflater();
+        MenuInflater inflater = popupMenu.getMenuInflater();
 
-        inflater.inflate(R.menu.popup_actions, mypopupmenu.getMenu());
+        inflater.inflate(R.menu.popup_actions, popupMenu.getMenu());
 
-        mypopupmenu.show();
+        popupMenu.show();
 
     }
 
