@@ -6,4 +6,10 @@
                         android:key="incognitoCheckBox"
                         android:summary="Toggle Incognito Browsing"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Customization">
+        <EditTextPreference android:title="Home Page"
+                            android:key="homePagePref"
+                            android:summary="Set Custom Homepage"
+                            android:defaultValue="google.com"/>
+    </PreferenceCategory>
 </PreferenceScreen>
