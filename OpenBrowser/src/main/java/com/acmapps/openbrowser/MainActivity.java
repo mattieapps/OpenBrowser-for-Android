@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickL
     int version = Build.VERSION.SDK_INT ;
 
     public WebView mWebView;
-    String homeURL = "http://google.com/";
+    //String homeURL = "http://google.com/";
 
     @SuppressLint("NewApi")
     @Override
@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickL
         mWebView = (WebView) findViewById(R.id.webView);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean incognitoCheckBox = sharedPreferences.getBoolean("incognitoCheckBox", false);
+
         if (incognitoCheckBox == true){
             mWebView.loadUrl("file:///android_asset/index_private.html");
 
@@ -139,6 +140,7 @@ public class MainActivity extends Activity implements PopupMenu.OnMenuItemClickL
             mWebView.goBack();
             return true;
         }
+
         return super.onKeyDown(keyCode, event);
     }
 
