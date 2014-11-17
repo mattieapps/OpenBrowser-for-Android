@@ -1,1 +1,1 @@
-include ':OpenBrowser', ':OpenBrowser'
+include ':app'
