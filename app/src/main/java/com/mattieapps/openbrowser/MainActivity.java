@@ -13,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -27,6 +29,8 @@ public class MainActivity extends ActionBarActivity {
     EditText mAddressEditText;
     Button mGoButton;
     WebView mWebView;
+    ProgressBar mProgressBar;
+
 
     //String homeURL = "http://google.com/";
 
@@ -49,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        boolean incognitoCheckBox = sharedPreferences.getBoolean("incognitoCheckBox", false);
+        boolean incognitoCheckBox = sharedPreferences.getBoolean("privateBrowsingCheckBox", false);
 
         if (incognitoCheckBox){
             mWebView.loadUrl("file:///android_asset/index_private.html");
@@ -67,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
             mWebView.getSettings().setAppCacheEnabled(false);
 
             Context context = getApplicationContext();
-            CharSequence text = "Incognito Mode Activated";
+            CharSequence text = "Private Browsing Mode Activated";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(context, text, duration);
@@ -90,8 +94,50 @@ public class MainActivity extends ActionBarActivity {
 
         mWebView.getSettings().setDisplayZoomControls(false);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            //This will be called on page loading progress
+
+            @Override
+
+            public void onProgressChanged(WebView view, int newProgress) {
+
+                String title = mWebView.getTitle();
+
+                super.onProgressChanged(view, newProgress);
+
+
+                mProgressBar.setProgress(newProgress);
+
+                if (newProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                    if (title == null){
+                        mToolbar.setTitle(R.string.app_name);
+                    }else if (!title.equals(null)) {
+                        mToolbar.setTitle(title + " - OpenBrowser");
+                    }
+
+                    CharSequence address = mWebView.getUrl();
+                    if (!address.equals("file:///android_asset/index.html")){
+                        mToolbar.setTitle(address);
+                    }
+
+                    if (address.equals("file:///android_asset/index_private.html")) {
+                        mToolbar.setTitle(R.string.app_name);
+                    } else {
+                        mToolbar.setTitle(R.string.app_name);
+                    }
+
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         //Keep Keyboard from auto popping up
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        closeKeyboard();
 
         //GBS Functions
         mGoButton.setOnClickListener(new View.OnClickListener() {
@@ -100,9 +146,16 @@ public class MainActivity extends ActionBarActivity {
                 String url = mAddressEditText.getText().toString();
 
                 mWebView.loadUrl("http://" + url);
+                closeKeyboard();
             }
         });
 
+    }
+
+    private void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mAddressEditText.getWindowToken(), 0);
     }
 
     @Override
@@ -132,10 +185,19 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
                 return true;
             case R.id.refreshButton:
-
+                mWebView.reload();
                 return true;
             case R.id.stopButton:
-
+                mWebView.stopLoading();
+                Toast.makeText(getApplication(), "Stopping...", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.homeButton:
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                String homeURL = sharedPreferences.getString("homePagePref", "http://google.com");
+                mWebView.loadUrl("http://" + homeURL);
+                return true;
+            case R.id.tabsButton:
+                Toast.makeText(getApplication(), "Tabs feature coming soon!", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
