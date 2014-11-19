@@ -2,9 +2,9 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Browsing">
-    <CheckBoxPreference android:title="Incognito Browsing"
-                        android:key="incognitoCheckBox"
-                        android:summary="Toggle Incognito Browsing"/>
+    <CheckBoxPreference android:title="Private Browsing"
+                        android:key="privateBrowsingCheckBox"
+                        android:summary="Toggle Private Browsing"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Customization">
         <EditTextPreference android:title="Home Page"
